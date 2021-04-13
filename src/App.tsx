@@ -32,13 +32,24 @@ function App() {
         setTasks(newTasks)
     }
 
+    //удаление таски
     const removeTask = (id: string) => {
         let filteredTasks = tasks.filter(t => t.id !== id)
         setTasks(filteredTasks)
     }
 
+    //смена фильтра
     const changeFilter = (value: FilterValuesType) => {
         setFilter(value)
+    }
+
+    //смена статуса выполнения таски
+    const changeStatusOfTask = (idTask: string, isDone: boolean) => {
+        let task = tasks.find(t => t.id === idTask)
+        if (task) {
+            task.isDone = isDone
+            setTasks([...tasks])
+        }
     }
 
     return (
@@ -49,6 +60,7 @@ function App() {
                 removeTask={removeTask}
                 changeFilter={changeFilter}
                 addTask={addTask}
+                changeStatusOfTask={changeStatusOfTask}
             />
         </div>
     );
