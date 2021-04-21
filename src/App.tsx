@@ -7,13 +7,14 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {Menu} from "@material-ui/icons";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
-type TodolistType = {
+export type TodolistType = {
     id: string
     title: string
     filter: FilterValuesType
 }
 type TasksStateType = {
-    [key: string]: Array<TaskType> // объект может иметь свойства-ключи, которые строковые (а ключи вообще в объекте и не могут быть иными), а вот значения этих св-в это массив объектов TaskType
+    [key: string]: Array<TaskType> // объект может иметь свойства-ключи, которые строковые
+    // (а ключи вообще в объекте и не могут быть иными), а вот значения этих св-в - это массив объектов TaskType
 }
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
     const removeTodolist = (id: string) => {
         setTodolists(todolists.filter(t => t.id !== id))  //сетаем отфильтрованный массив тудулистов без удаляемого
         delete tasks[id] //удаление всех тасок этого тудулиста
+        setTasks({...tasks})
     }
 
     //добавление тудулиста
@@ -113,7 +115,9 @@ function App() {
         if (todolist) {
             todolist.filter = value
             setTodolists([...todolists])
-            //если есть тудулист, то принимаем значение фильтра для нужного тудулиста из параметров функции, модифицировав его при этом, затем сетаем копию тудулистов, так меняется фильтр на актуальный и затем передается через пропсы в конкретный тудулист
+            //если есть тудулист, то принимаем значение фильтра для нужного тудулиста из параметров функции,
+            // модифицировав его при этом, затем сетаем копию тудулистов, так меняется фильтр на актуальный
+            // и затем передается через пропсы в конкретный тудулист
         }
     }
 
