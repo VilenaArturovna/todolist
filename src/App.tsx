@@ -12,7 +12,7 @@ export type TodolistType = {
     title: string
     filter: FilterValuesType
 }
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: Array<TaskType> // объект может иметь свойства-ключи, которые строковые
     // (а ключи вообще в объекте и не могут быть иными), а вот значения этих св-в - это массив объектов TaskType
 }
