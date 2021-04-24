@@ -1,6 +1,9 @@
-import {userReducer} from "./user-reducer";
+import {userReducer, UserStateType} from "./user-reducer";
 
-const startState = { age: 20, childrenCount: 2, name: 'Dimych' };
+let startState: UserStateType;
+beforeEach(() => {
+    startState = { age: 20, childrenCount: 2, name: 'Dimych' }
+})
 
 test('user reducer should increment only age', () => {
     const endState = userReducer(startState, {type: 'INCREMENT-AGE'})

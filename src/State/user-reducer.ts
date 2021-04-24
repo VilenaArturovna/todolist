@@ -1,4 +1,4 @@
-type StateType = {
+export type UserStateType = {
     age: number
     childrenCount: number
     name: string
@@ -8,7 +8,7 @@ type ActionType = {
     [key: string]: any
 }
 
-export const userReducer = (state: StateType, action: ActionType) => {
+export const userReducer = (state: UserStateType, action: ActionType) => {
     switch (action.type) {
         case 'INCREMENT-AGE':
             return {...state, age: state.age + 1}
