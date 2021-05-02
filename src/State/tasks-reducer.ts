@@ -28,20 +28,12 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
         }
         case 'CHANGE-TASK-TITLE': {
             const copy = {...state}
-            copy[action.todolistId] = copy[action.todolistId].map(t => {return {...t}}) //именно так копируются таски в асс. массиве
-            let task = [...copy[action.todolistId]].find(t => t.id === action.id)
-            if (task) {
-                task.title = action.title
-            }
+            copy[action.todolistId] = copy[action.todolistId].map(t => t.id === action.id ? {...t, title: action.title} : t)
             return copy
         }
         case 'CHANGE-TASK-STATUS': {
             const copy = {...state}
-            copy[action.todolistId] = copy[action.todolistId].map(t => {return {...t}})
-            let task = copy[action.todolistId].find(t => t.id === action.id)
-            if (task) {
-                task.isDone = action.isDone
-            }
+            copy[action.todolistId] = copy[action.todolistId].map(t => t.id === action.id ? {...t, isDone: action.isDone} : t)
             return copy
         }
         case "ADD-TODOLIST": {
