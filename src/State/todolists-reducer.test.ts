@@ -1,5 +1,4 @@
 import {v1} from "uuid";
-import {FilterValuesType, TodolistType} from "../App";
 import {
     addTodolistAC,
     changeFilterOfTodolistAC,
@@ -7,19 +6,20 @@ import {
     removeTodolistAC,
     todolistsReducer
 } from "./todolists-reducer";
+import {FilterValuesType, TodolistEntityType} from "../AppWithRedux";
 
 //создаем переменные, необходимые для теста
 let todolistId1: string
 let todolistId2: string
-let startState: Array<TodolistType> = [];
+let startState: Array<TodolistEntityType> = [];
 
 //перед каждым тестом данные будут перезатираться
 beforeEach(() => {
     todolistId1 = v1()
     todolistId2 = v1()
     startState = [
-        {id: todolistId1, title: 'What to learn', filter: 'all'},
-        {id: todolistId2, title: 'What to buy', filter: 'all'}
+        {id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
+        {id: todolistId2, title: 'What to buy', filter: 'all', addedDate: '', order: 1}
     ];
 })
 

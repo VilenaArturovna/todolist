@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import './App.css';
-import {TaskType, Todolist} from "./Todolist";
+import {Todolist} from "./Todolist";
 import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
@@ -13,13 +13,11 @@ import {
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./State/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootStateType} from "./State/Store";
+import {TodolistType} from "./api/todolist-api";
+import {TaskStatuses, TaskType} from "./api/task-api";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
+export type TodolistEntityType = TodolistType & {filter: FilterValuesType}
 export type TasksStateType = {
     [key: string]: Array<TaskType> // объект может иметь свойства-ключи, которые строковые
     // (а ключи вообще в объекте и не могут быть иными), а вот значения этих св-в - это массив объектов TaskType
@@ -27,7 +25,7 @@ export type TasksStateType = {
 
 function AppWithRedux() {
 
-    const todolists = useSelector<RootStateType, Array<TodolistType>>(state => state.todolists)
+    const todolists = useSelector<RootStateType, Array<TodolistEntityType>>(state => state.todolists)
     const tasks = useSelector<RootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
 
@@ -49,8 +47,8 @@ function AppWithRedux() {
     }, [dispatch])
 
     //смена статуса выполнения таски
-    const changeStatusOfTask = useCallback((idTask: string, isDone: boolean, todolistId: string) => {
-        dispatch(changeTaskStatusAC(todolistId, idTask, isDone))
+    const changeStatusOfTask = useCallback((idTask: string, status: TaskStatuses, todolistId: string) => {
+        dispatch(changeTaskStatusAC(todolistId, idTask, status))
     }, [dispatch])
 
     //ТУДУЛИСТЫ

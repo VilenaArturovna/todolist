@@ -1,6 +1,6 @@
 import React, {useReducer} from 'react';
 import './App.css';
-import {TaskType, Todolist} from "./Todolist";
+import {Todolist} from "./Todolist";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
@@ -13,13 +13,9 @@ import {
     todolistsReducer
 } from "./State/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./State/tasks-reducer";
+import {FilterValuesType, TodolistEntityType} from "./AppWithRedux";
+import {TaskStatuses, TaskType} from "./api/task-api";
 
-export type FilterValuesType = 'all' | 'active' | 'completed'
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
 export type TasksStateType = {
     [key: string]: Array<TaskType> // объект может иметь свойства-ключи, которые строковые
     // (а ключи вообще в объекте и не могут быть иными), а вот значения этих св-в - это массив объектов TaskType
@@ -30,23 +26,62 @@ function AppWithReducers() {
     const todolistId1 = v1()
     const todolistId2 = v1()
 
-    let [todolists, dispatchToTodolists] = useReducer<React.Reducer<TodolistType[], TodolistActionType>>(todolistsReducer,[
-        {id: todolistId1, title: 'What to learn', filter: 'all'},
-        {id: todolistId2, title: 'What to buy', filter: 'all'}
+    let [todolists, dispatchToTodolists] = useReducer<React.Reducer<TodolistEntityType[], TodolistActionType>>(todolistsReducer,[
+        {id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
+        {id: todolistId2, title: 'What to buy', filter: 'all', addedDate: '', order: 1}
     ])
 
     let [tasks, dispatchToTasks] = useReducer(tasksReducer,{
             [todolistId1]: [
-                {id: v1(), title: 'HTML', isDone: true},
-                {id: v1(), title: 'CSS', isDone: false},
-                {id: v1(), title: 'JS', isDone: true},
-                {id: v1(), title: 'React', isDone: true},
-                {id: v1(), title: 'Redux', isDone: true},],
+                {
+                    id: v1(),
+                    title: 'HTML',
+                    status: TaskStatuses.Completed,
+                    todoListId: todolistId1,
+                    order: 1,
+                    addedDate: '',
+                    deadline: '',
+                    description: '',
+                    priority: 0,
+                    startDate: ''
+                },
+                {
+                    id: v1(),
+                    title: 'CSS',
+                    status: TaskStatuses.InProgress,
+                    todoListId: todolistId1,
+                    order: 1,
+                    addedDate: '',
+                    deadline: '',
+                    description: '',
+                    priority: 0,
+                    startDate: ''
+                }],
             [todolistId2]: [
-                {id: v1(), title: 'Bread', isDone: true},
-                {id: v1(), title: 'Peanut butter', isDone: false},
-                {id: v1(), title: 'Cabbage', isDone: true},
-                {id: v1(), title: 'Bananas', isDone: true},]
+                {
+                    id: v1(),
+                    title: 'Bread',
+                    status: TaskStatuses.Completed,
+                    todoListId: todolistId2,
+                    order: 1,
+                    addedDate: '',
+                    deadline: '',
+                    description: '',
+                    priority: 0,
+                    startDate: ''
+                },
+                {
+                    id: v1(),
+                    title: 'Peanut butter',
+                    status: TaskStatuses.Completed,
+                    todoListId: todolistId2,
+                    order: 1,
+                    addedDate: '',
+                    deadline: '',
+                    description: '',
+                    priority: 0,
+                    startDate: ''
+                }]
         }
     )
 
@@ -68,8 +103,8 @@ function AppWithReducers() {
     }
 
     //смена статуса выполнения таски
-    const changeStatusOfTask = (idTask: string, isDone: boolean, todolistId: string) => {
-        dispatchToTasks(changeTaskStatusAC(todolistId, idTask, isDone))
+    const changeStatusOfTask = (idTask: string, status: TaskStatuses, todolistId: string) => {
+        dispatchToTasks(changeTaskStatusAC(todolistId, idTask, status))
     }
 
     //ТУДУЛИСТЫ
@@ -120,10 +155,10 @@ function AppWithReducers() {
                     {todolists.map(t => {
                         let tasksForTodolist = tasks[t.id]
                         if (t.filter === 'active') {
-                            tasksForTodolist = tasksForTodolist.filter(t => !t.isDone)
+                            tasksForTodolist = tasksForTodolist.filter(t => t.status === TaskStatuses.InProgress)
                         }
                         if (t.filter === 'completed') {
-                            tasksForTodolist = tasksForTodolist.filter(t => t.isDone)
+                            tasksForTodolist = tasksForTodolist.filter(t => t.status === TaskStatuses.Completed)
                         }
 
                         return <Grid item>
