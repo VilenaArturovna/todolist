@@ -1,11 +1,14 @@
 import {v1} from "uuid";
 import {FilterValuesType, TodolistEntityType} from "../AppWithRedux";
+import {Dispatch} from "redux";
+import {todolistAPI} from "../api/todolist-api";
 
 export type TodolistActionType =
     ReturnType<typeof removeTodolistAC>
     | ReturnType<typeof addTodolistAC>
     | ReturnType<typeof changeTitleOfTodolistAC>
     | ReturnType<typeof changeFilterOfTodolistAC>
+    | ReturnType<typeof setTodolistsAC>
 
 const initialState: Array<TodolistEntityType> = []
 
@@ -37,6 +40,12 @@ export const todolistsReducer = (state: Array<TodolistEntityType> = initialState
             }
             return copy
         }
+        case "SET-TODOLISTS": {
+            return action.todolists.map(tl => ({
+                ...tl,
+                filter: "all"
+            }))
+        }
         default:
             return state
     }
@@ -54,3 +63,13 @@ export const changeFilterOfTodolistAC = (id: string, filter: FilterValuesType) =
     id,
     filter
 } as const)
+export const setTodolistsAC = (todolists: Array<TodolistEntityType>) => ({type: "SET-TODOLISTS", todolists} as const)
+
+export const fetchTodolistsTC = () => {
+    return (dispatch: Dispatch) => {
+        todolistAPI.getTodolists()
+            .then((res) => {
+            dispatch(setTodolistsAC(res.data))
+        })
+    }
+}

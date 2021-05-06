@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
@@ -6,6 +6,8 @@ import {Delete} from "@material-ui/icons";
 import {Task} from "./Task";
 import {FilterValuesType} from "./AppWithRedux";
 import {TaskStatuses, TaskType} from "./api/task-api";
+import {useDispatch} from "react-redux";
+import {fetchTasksTC} from "./State/tasks-reducer";
 
 
 type TodolistPropsType = {
@@ -23,7 +25,12 @@ type TodolistPropsType = {
 }
 
 export const Todolist = React.memo((props: TodolistPropsType) => {
-    console.log('todolist called')
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTasksTC(props.id))
+    }, [props.id])
 
     const addTask = useCallback((title: string) => { //хук чтобы addItemForm не перерисовывалась постоянно
         props.addTask(title, props.id)

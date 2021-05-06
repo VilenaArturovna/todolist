@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {TodolistEntityType} from "../AppWithRedux";
 
 export const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1',
@@ -22,7 +23,7 @@ export type TodolistType = {
 
 export const todolistAPI = {
     getTodolists() {
-        return instance.get<Array<TodolistType>>(`/todo-lists/`)
+        return instance.get<Array<TodolistEntityType>>(`/todo-lists/`)
     },
     createTodolist(title: string) {
         return instance.post<ResponseType<{item: TodolistType}>>(`/todo-lists/`, {title: title})
