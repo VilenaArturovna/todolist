@@ -3,7 +3,7 @@ import {
     addTodolistAC,
     changeFilterOfTodolistAC,
     changeTitleOfTodolistAC,
-    removeTodolistAC,
+    removeTodolistAC, setTodolistsAC,
     todolistsReducer
 } from "./todolists-reducer";
 import {FilterValuesType, TodolistEntityType} from "../AppWithRedux";
@@ -61,5 +61,12 @@ test('correct filter of todolist should be changed', () => {
     expect(startState.length).toBe(2)
     expect(endState[0].filter).toBe('all')
     expect(endState[1].filter).toBe(newFilter)
+})
+
+test('todolists should be received', () => {
+
+    const endState = todolistsReducer([], setTodolistsAC(startState))
+
+    expect(endState.length).toBe(2)
 })
 

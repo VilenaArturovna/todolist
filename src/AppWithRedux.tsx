@@ -10,14 +10,21 @@ import {
     changeTitleOfTodolistAC, fetchTodolistsTC,
     removeTodolistAC, setTodolistsAC
 } from "./State/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./State/tasks-reducer";
+import {
+    addTaskAC,
+    addTaskTC,
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    removeTaskAC,
+    removeTaskTC
+} from "./State/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootStateType} from "./State/Store";
 import {todolistAPI, TodolistType} from "./api/todolist-api";
-import {TaskStatuses, TaskType} from "./api/task-api";
+import {taskAPI, TaskStatuses, TaskType} from "./api/task-api";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
-export type TodolistEntityType = TodolistType & {filter: FilterValuesType}
+export type TodolistEntityType = TodolistType & { filter: FilterValuesType }
 export type TasksStateType = {
     [key: string]: Array<TaskType> // объект может иметь свойства-ключи, которые строковые
     // (а ключи вообще в объекте и не могут быть иными), а вот значения этих св-в - это массив объектов TaskType
@@ -30,19 +37,19 @@ function AppWithRedux() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-            dispatch(fetchTodolistsTC())
-        }, [])
+        dispatch(fetchTodolistsTC())
+    }, [])
 
     //ТАСКИ
 
     //добавление таски
     const addTask = useCallback((titleTask: string, todolistId: string) => {
-        dispatch(addTaskAC(todolistId, titleTask))
+        dispatch(addTaskTC(todolistId, titleTask))
     }, [dispatch])
 
     //удаление таски
     const removeTask = useCallback((id: string, todolistId: string) => {
-        dispatch(removeTaskAC(todolistId, id))
+        dispatch(removeTaskTC(todolistId, id))
     }, [dispatch])
 
     //смена наименования таски
