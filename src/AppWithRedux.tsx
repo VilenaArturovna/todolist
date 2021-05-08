@@ -5,10 +5,10 @@ import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
-    addTodolistAC,
+    addTodolistAC, addTodolistTC,
     changeFilterOfTodolistAC,
-    changeTitleOfTodolistAC, fetchTodolistsTC,
-    removeTodolistAC, setTodolistsAC
+    changeTodolistTitleAC, deleteTodolistTC, fetchTodolistsTC,
+    removeTodolistAC, setTodolistsAC, updateTodolistTitleTC
 } from "./State/todolists-reducer";
 import {
     addTaskAC,
@@ -16,7 +16,7 @@ import {
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC,
-    removeTaskTC
+    removeTaskTC, updateTaskStatusTC, updateTaskTitleTC
 } from "./State/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootStateType} from "./State/Store";
@@ -38,7 +38,7 @@ function AppWithRedux() {
 
     useEffect(() => {
         dispatch(fetchTodolistsTC())
-    }, [])
+    }, [dispatch])
 
     //ТАСКИ
 
@@ -54,29 +54,29 @@ function AppWithRedux() {
 
     //смена наименования таски
     const changeTitleTask = useCallback((idTask: string, newTitle: string, todolistId: string) => {
-        dispatch(changeTaskTitleAC(todolistId, idTask, newTitle))
+        dispatch(updateTaskTitleTC(todolistId, idTask, newTitle))
     }, [dispatch])
 
     //смена статуса выполнения таски
     const changeStatusOfTask = useCallback((idTask: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(changeTaskStatusAC(todolistId, idTask, status))
+        dispatch(updateTaskStatusTC(todolistId, idTask, status))
     }, [dispatch])
 
     //ТУДУЛИСТЫ
 
     //удаление тудулиста
     const removeTodolist = useCallback((id: string) => {
-        dispatch(removeTodolistAC(id))
+        dispatch(deleteTodolistTC(id))
     }, [dispatch])
 
     //добавление тудулиста
     const addTodolist = useCallback((title: string) => {
-        dispatch(addTodolistAC(title))
+        dispatch(addTodolistTC(title))
     }, [dispatch])
 
     //смена наименования тудулиста
     const changeTitleTodolist = useCallback((newTitle: string, todolistId: string) => {
-        dispatch(changeTitleOfTodolistAC(todolistId, newTitle))
+        dispatch(updateTodolistTitleTC(todolistId, newTitle))
     }, [dispatch])
 
     //смена фильтра

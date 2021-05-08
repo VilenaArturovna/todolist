@@ -89,7 +89,7 @@ export const UpdateTaskTitle = () => {
     const [status, setStatus] = useState<number>(0)
 
     const updateTask = () => {
-        taskAPI.updateTaskTitle(todolistId, taskId, {
+        taskAPI.updateTask(todolistId, taskId, {
             title,
             deadline: '',
             status,

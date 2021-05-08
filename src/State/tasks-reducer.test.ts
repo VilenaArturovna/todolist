@@ -319,45 +319,7 @@ test('empty arrays of tasks should be received into todolists', () => {
 });
 
 test('array of tasks should be received into todolist', () => {
-    const tasks = [
-        {
-            id: "1",
-            title: "bread",
-            status: TaskStatuses.InProgress,
-            todoListId: "todolistId1",
-            order: 1,
-            addedDate: '',
-            deadline: '',
-            description: '',
-            priority: 0,
-            startDate: ''
-        },
-        {
-            id: "2",
-            title: "milk",
-            status: TaskStatuses.Completed,
-            todoListId: "todolistId1",
-            order: 1,
-            addedDate: '',
-            deadline: '',
-            description: '',
-            priority: 0,
-            startDate: ''
-        },
-        {
-            id: "3",
-            title: "tea",
-            status: TaskStatuses.InProgress,
-            todoListId: "todolistId1",
-            order: 1,
-            addedDate: '',
-            deadline: '',
-            description: '',
-            priority: 0,
-            startDate: ''
-        }
-    ]
-    const endState = tasksReducer({}, setTasksAC('todolistId1', tasks))
+    const endState = tasksReducer({}, setTasksAC('todolistId1', startState['todolistId2']))
 
     expect(endState["todolistId1"].length).toBe(3);
 });

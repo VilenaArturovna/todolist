@@ -30,7 +30,7 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
 
     useEffect(() => {
         dispatch(fetchTasksTC(props.id))
-    }, [props.id])
+    }, [dispatch, props.id])
 
     const addTask = useCallback((title: string) => { //хук чтобы addItemForm не перерисовывалась постоянно
         props.addTask(title, props.id)
