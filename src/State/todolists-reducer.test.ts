@@ -3,7 +3,7 @@ import {
     addTodolistAC,
     changeFilterOfTodolistAC,
     changeTodolistTitleAC,
-    removeTodolistAC, setTodolistsAC,
+    deleteTodolistAC, setTodolistsAC,
     todolistsReducer
 } from "./todolists-reducer";
 import {FilterValuesType, TodolistEntityType} from "../AppWithRedux";
@@ -24,7 +24,7 @@ beforeEach(() => {
 })
 
 test('correct todolist should be removed', () => {
-    const endState = todolistsReducer(startState, removeTodolistAC(todolistId1))
+    const endState = todolistsReducer(startState, deleteTodolistAC(todolistId1))
 
     expect(endState.length).toBe(1)
     expect(startState.length).toBe(2)
@@ -32,13 +32,15 @@ test('correct todolist should be removed', () => {
 })
 
 test('correct todolist should be added', () => {
-    const newTodolistTitle = 'NeW ToDoLiSt'
+    const newTodolist = {
+        id: '3', title: 'New Todolist', addedDate: '', order: 0
+    }
 
-    const endState = todolistsReducer(startState, addTodolistAC(newTodolistTitle))
+    const endState = todolistsReducer(startState, addTodolistAC(newTodolist))
 
     expect(endState.length).toBe(3)
     expect(startState.length).toBe(2)
-    expect(endState[2].title).toBe(newTodolistTitle)
+    expect(endState[2].title).toBe(newTodolist.title)
 })
 
 test('correct todolist should change its name', () => {

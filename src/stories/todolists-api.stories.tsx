@@ -23,7 +23,7 @@ export const CreateTodolist = () => {
     const [title, setTitle] = useState<string>('')
 
     const createTodolist = () => {
-        todolistAPI.createTodolist(title)
+        todolistAPI.addTodolist(title)
             .then((res) => {
                 setState(res.data)
             })

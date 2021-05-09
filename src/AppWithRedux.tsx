@@ -5,23 +5,17 @@ import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
-    addTodolistAC, addTodolistTC,
+    addTodolistTC,
     changeFilterOfTodolistAC,
-    changeTodolistTitleAC, deleteTodolistTC, fetchTodolistsTC,
-    removeTodolistAC, setTodolistsAC, updateTodolistTitleTC
+    deleteTodolistTC,
+    fetchTodolistsTC,
+    updateTodolistTitleTC
 } from "./State/todolists-reducer";
-import {
-    addTaskAC,
-    addTaskTC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    removeTaskAC,
-    removeTaskTC, updateTaskStatusTC, updateTaskTitleTC
-} from "./State/tasks-reducer";
+import {addTaskTC, removeTaskTC, updateTaskTC} from "./State/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootStateType} from "./State/Store";
-import {todolistAPI, TodolistType} from "./api/todolist-api";
-import {taskAPI, TaskStatuses, TaskType} from "./api/task-api";
+import {TodolistType} from "./api/todolist-api";
+import {TaskStatuses, TaskType} from "./api/task-api";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 export type TodolistEntityType = TodolistType & { filter: FilterValuesType }
@@ -54,12 +48,12 @@ function AppWithRedux() {
 
     //смена наименования таски
     const changeTitleTask = useCallback((idTask: string, newTitle: string, todolistId: string) => {
-        dispatch(updateTaskTitleTC(todolistId, idTask, newTitle))
+        dispatch(updateTaskTC(todolistId, idTask, {title: newTitle}))
     }, [dispatch])
 
     //смена статуса выполнения таски
     const changeStatusOfTask = useCallback((idTask: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(updateTaskStatusTC(todolistId, idTask, status))
+        dispatch(updateTaskTC(todolistId, idTask, {status}))
     }, [dispatch])
 
     //ТУДУЛИСТЫ
