@@ -1,5 +1,5 @@
 import {Checkbox, IconButton} from "@material-ui/core";
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "./components/EditableSpan";
 import {Delete} from "@material-ui/icons";
 import React, {ChangeEvent, useCallback} from "react";
 import {TaskStatuses, TaskType} from "./api/task-api";

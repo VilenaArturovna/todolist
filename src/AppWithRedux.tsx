@@ -1,8 +1,18 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
-import {AddItemForm} from "./AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {AddItemForm} from "./components/AddItemForm";
+import {
+    AppBar,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Paper,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
     addTodolistTC,
@@ -16,6 +26,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootStateType} from "./State/Store";
 import {TodolistType} from "./api/todolist-api";
 import {TaskStatuses, TaskType} from "./api/task-api";
+import {RequestStatusType} from "./State/app-reducer";
+import {ErrorSnackbar} from "./components/ErrorSnackbar";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 export type TodolistEntityType = TodolistType & { filter: FilterValuesType }
@@ -28,6 +40,8 @@ function AppWithRedux() {
 
     const todolists = useSelector<RootStateType, Array<TodolistEntityType>>(state => state.todolists)
     const tasks = useSelector<RootStateType, TasksStateType>(state => state.tasks)
+    const status = useSelector<RootStateType, RequestStatusType>(state => state.app.status)
+
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -81,6 +95,7 @@ function AppWithRedux() {
 
     return (
         <div className="App">
+            <ErrorSnackbar />
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -91,6 +106,7 @@ function AppWithRedux() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                {status === 'loading' && <LinearProgress/>}
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: '20px'}}>

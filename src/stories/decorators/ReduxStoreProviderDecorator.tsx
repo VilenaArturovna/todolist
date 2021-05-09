@@ -68,6 +68,10 @@ const initialGlobalState = {
                 priority: 0,
                 startDate: ''
             }]
+    },
+    app: {
+        status: 'loading',
+        error: null
     }
 };
 

@@ -3,6 +3,7 @@ import {taskAPI, TaskType, UpdateTaskModelType} from "../api/task-api";
 import {Dispatch} from "redux";
 import {TasksStateType} from "../AppWithRedux";
 import {RootStateType} from "./Store";
+import {setAppStatusAC} from "./app-reducer";
 
 export type TasksActionType =
     ReturnType<typeof removeTaskAC>
@@ -74,25 +75,31 @@ export const setTasksAC = (todolistId: string, tasks: Array<TaskType>) => ({
 
 export const fetchTasksTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         taskAPI.getTasks(todolistId)
             .then((res) => {
                 dispatch(setTasksAC(todolistId, res.data.items))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
 export const removeTaskTC = (todolistId: string, taskId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         taskAPI.deleteTask(todolistId, taskId)
             .then(() => {
                 dispatch(removeTaskAC(todolistId, taskId))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
 export const addTaskTC = (todolistId: string, title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         taskAPI.createTask(todolistId, title)
             .then((res) => {
                 dispatch(addTaskAC(res.data.data.item))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
@@ -121,8 +128,10 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Up
                 status: task.status,
                 ...domainModel
             }
+            dispatch(setAppStatusAC('loading'))
             taskAPI.updateTask(todolistId, taskId, apiModel).then(() => {
                 dispatch(updateTaskAC(todolistId, taskId, domainModel))
+                dispatch(setAppStatusAC('succeeded'))
             })
         }
     }

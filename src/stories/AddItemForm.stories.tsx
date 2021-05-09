@@ -2,7 +2,7 @@ import React from 'react';
 // @ts-ignore
 import {Meta } from '@storybook/react';
 
-import {AddItemForm} from "../AddItemForm";
+import {AddItemForm} from "../components/AddItemForm";
 // @ts-ignore
 import {action} from "@storybook/addon-actions/";
 
