@@ -1,25 +1,31 @@
 import {Snackbar} from "@material-ui/core";
 import MuiAlert, {AlertProps} from "@material-ui/lab/Alert";
-import React, {SyntheticEvent, useState} from "react";
+import React, {SyntheticEvent} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {RootStateType} from "../State/Store";
+import {setAppErrorAC} from "../State/app-reducer";
 
 function Alert(props: AlertProps) {
     return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 
 export const ErrorSnackbar = () => {
-    const [open, setOpen] = useState<boolean>(true)
+    const error = useSelector<RootStateType, string | null>(state => state.app.error)
+    const dispatch = useDispatch()
+
+    const isOpen = (error !== null)
 
     const handleClose = (event?: SyntheticEvent, reason?: string) => {
         if (reason === 'clickaway') {
             return
         }
-        setOpen(false)
+        dispatch(setAppErrorAC(null)) //чтобы ошибка исчезла
     }
 
     return (
-    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-            This is a success message!
+    <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+            {error}
         </Alert>
     </Snackbar>)
 }

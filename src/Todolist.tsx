@@ -22,18 +22,23 @@ type TodolistPropsType = {
     removeTodolist: (id: string) => void
     changeTitleTask: (idTask: string, newTitle: string, todolistId: string) => void
     changeTodolistTitle: (newTitle: string, todolistId: string) => void
+    demo?: boolean
 }
 
 export const Todolist = React.memo((
     {
         id, title, filter, tasks, removeTask, changeFilter, addTask, changeStatusOfTask, removeTodolist,
-        changeTitleTask, changeTodolistTitle
+        changeTitleTask, changeTodolistTitle, demo = false
     }: TodolistPropsType) => {
 
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if (demo) {    //если демо-режим для storybook, то не диспатчить санку
+            return;
+        }
         dispatch(fetchTasksTC(id))
+
     }, [dispatch, id])
 
     const createTask = useCallback((title: string) => { //хук чтобы addItemForm не перерисовывалась постоянно

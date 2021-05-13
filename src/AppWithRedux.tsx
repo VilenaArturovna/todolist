@@ -30,13 +30,17 @@ import {RequestStatusType} from "./State/app-reducer";
 import {ErrorSnackbar} from "./components/ErrorSnackbar";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
-export type TodolistEntityType = TodolistType & { filter: FilterValuesType }
+export type TodolistEntityType = TodolistType & { filter: FilterValuesType, entityStatus: RequestStatusType }
 export type TasksStateType = {
     [key: string]: Array<TaskType> // объект может иметь свойства-ключи, которые строковые
     // (а ключи вообще в объекте и не могут быть иными), а вот значения этих св-в - это массив объектов TaskType
 }
 
-function AppWithRedux() {
+type PropsType = {
+    demo?: boolean
+}
+
+function AppWithRedux({demo = false}: PropsType) {
 
     const todolists = useSelector<RootStateType, Array<TodolistEntityType>>(state => state.todolists)
     const tasks = useSelector<RootStateType, TasksStateType>(state => state.tasks)
@@ -45,6 +49,9 @@ function AppWithRedux() {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if (demo) {    //если демо-режим для storybook, то не диспатчить санку
+            return;
+        }
         dispatch(fetchTodolistsTC())
     }, [dispatch])
 
@@ -129,6 +136,7 @@ function AppWithRedux() {
                                     removeTodolist={removeTodolist}
                                     changeTitleTask={changeTitleTask}
                                     changeTodolistTitle={changeTitleTodolist}
+                                    demo={demo}
                                 />
                             </Paper>
                         </Grid>

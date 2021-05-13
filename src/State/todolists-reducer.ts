@@ -17,7 +17,7 @@ export const todolistsReducer = (state: Array<TodolistEntityType> = initialState
         case 'REMOVE-TODOLIST':
             return state.filter(t => t.id !== action.id) //filter возвращает отфильтрованный массив
         case 'ADD-TODOLIST':
-            return [{...action.todolist, filter: 'all'}, ...state]
+            return [{...action.todolist, filter: 'all', entityStatus: "succeeded"}, ...state]
         case 'CHANGE-TODOLIST-TITLE': {
             const copy = [...state]
             let todo = copy.find(t => t.id === action.id)
@@ -37,7 +37,8 @@ export const todolistsReducer = (state: Array<TodolistEntityType> = initialState
         case "SET-TODOLISTS": {
             return action.todolists.map(tl => ({
                 ...tl,
-                filter: "all"
+                filter: "all",
+                entityStatus: "succeeded"
             }))
         }
         default:

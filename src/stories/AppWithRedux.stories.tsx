@@ -13,5 +13,5 @@ export default {
 } as Meta;
 
 export const AppWithReduxBaseExample = () => {
-  return <AppWithRedux />
+  return <AppWithRedux demo={true}/>
 }
