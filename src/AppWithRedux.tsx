@@ -53,7 +53,7 @@ function AppWithRedux({demo = false}: PropsType) {
             return;
         }
         dispatch(fetchTodolistsTC())
-    }, [dispatch])
+    }, [dispatch, demo])
 
     //ТАСКИ
 
@@ -120,15 +120,13 @@ function AppWithRedux({demo = false}: PropsType) {
                     <AddItemForm addItem={addTodolist}/>
                 </Grid>
                 <Grid container spacing={3}>
-                    {todolists.map(t => {
-                        return <Grid item key={t.id}>
+                    {todolists.map(tl => {
+                        return <Grid item key={tl.id}>
                             <Paper style={{padding: '10px'}}>
                                 <Todolist
-                                    key={t.id}
-                                    id={t.id}
-                                    title={t.title}
-                                    filter={t.filter}
-                                    tasks={tasks[t.id]}
+                                    key={tl.id}
+                                    todolist={tl}
+                                    tasks={tasks[tl.id]}
                                     removeTask={removeTask}
                                     changeFilter={changeFilter}
                                     addTask={addTask}

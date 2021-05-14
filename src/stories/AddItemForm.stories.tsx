@@ -16,3 +16,6 @@ const addItemCallback = action('Button inside from clicked')
 export const AddItemFormsBaseExample = () => {
   return <AddItemForm addItem={addItemCallback} />
 }
+export const AddItemFormsDisabledExample = () => {
+  return <AddItemForm addItem={addItemCallback} disabled={true}/>
+}

@@ -1,12 +1,13 @@
 import {v1} from "uuid";
 import {
     addTodolistAC,
-    changeFilterOfTodolistAC,
+    changeFilterOfTodolistAC, changeTodolistEntityStatusAC,
     changeTodolistTitleAC,
     deleteTodolistAC, setTodolistsAC,
     todolistsReducer
 } from "./todolists-reducer";
 import {FilterValuesType, TodolistEntityType} from "../AppWithRedux";
+import {RequestStatusType} from "./app-reducer";
 
 //создаем переменные, необходимые для теста
 let todolistId1: string
@@ -18,8 +19,8 @@ beforeEach(() => {
     todolistId1 = v1()
     todolistId2 = v1()
     startState = [
-        {id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-        {id: todolistId2, title: 'What to buy', filter: 'all', addedDate: '', order: 1}
+        {id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: 'succeeded'},
+        {id: todolistId2, title: 'What to buy', filter: 'all', addedDate: '', order: 1, entityStatus: 'succeeded'}
     ];
 })
 
@@ -72,3 +73,12 @@ test('todolists should be received', () => {
     expect(endState.length).toBe(2)
 })
 
+test('correct todolist entityStatus should be changed', () => {
+    const newStatus: RequestStatusType = 'loading'
+
+    const endState = todolistsReducer(startState, changeTodolistEntityStatusAC(todolistId1, newStatus))
+
+    expect(startState[0].entityStatus).toBe('succeeded')
+    expect(endState[0].entityStatus).toBe(newStatus)
+    expect(endState[1].entityStatus).toBe('succeeded')
+})
