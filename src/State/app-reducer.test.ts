@@ -11,19 +11,19 @@ beforeEach(() => {
 })
 
 test('correct error message should be set', () => {
-    const endState = appReducer(startState, setAppErrorAC('some error'))
+    const endState = appReducer(startState, setAppErrorAC({error:'some error'}))
 
     expect(endState.error).toBe('some error')
     expect(startState.error).toBe(null)
 })
 test('correct status should be set', () => {
-    const endState = appReducer(startState, setAppStatusAC("succeeded"))
+    const endState = appReducer(startState, setAppStatusAC({status: "succeeded"}))
 
     expect(endState.status).toBe("succeeded")
     expect(startState.status).toBe("idle")
 })
 test('initialized status should be changed', () => {
-    const endState = appReducer(startState, setIsInitializedAC(true))
+    const endState = appReducer(startState, setIsInitializedAC({isInitialized:true}))
 
     expect(endState.isInitialized).toBe(true)
     expect(startState.isInitialized).toBe(false)

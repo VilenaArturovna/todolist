@@ -5,7 +5,7 @@ const startState = {
 }
 
 test('authorization status should be changed', () => {
-    const endState = authReducer(startState, setIsLoggedInAC(true))
+    const endState = authReducer(startState, setIsLoggedInAC({value: true}))
 
     expect(startState.isLoggedIn).toBe(false)
     expect(endState.isLoggedIn).toBe(true)

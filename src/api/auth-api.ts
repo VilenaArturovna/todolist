@@ -12,7 +12,7 @@ export const authAPI = {
         return instance.get<ResponseType<{id: number, email: string, login: string}>>('/auth/me')
     },
     login(data: LoginParamsType) {
-        return instance.post<ResponseType<{userId?: number}>>('/auth/login', {data})
+        return instance.post<ResponseType<{userId?: number}>>('/auth/login', data)
     },
     logout() {
         return instance.delete<ResponseType>('/auth/login')

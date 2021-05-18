@@ -76,7 +76,7 @@ export const TodolistList = ({demo = false}: PropsType) => {
 
     //смена фильтра
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
-        dispatch(changeFilterOfTodolistAC(todolistId, value))
+        dispatch(changeFilterOfTodolistAC({id: todolistId, filter: value}))
     }, [dispatch])
 
     if (!isLoggedIn) {
