@@ -3,8 +3,7 @@ import {
     addTaskAC,
     updateTaskAC,
     removeTaskAC,
-    setTasksAC,
-    tasksReducer
+    tasksReducer, fetchTasksTC
 } from "./tasks-reducer";
 import {TaskStatuses} from "../api/task-api";
 import {TasksStateType} from "../AppWithRedux";
@@ -329,7 +328,10 @@ test('empty arrays of tasks should be received into todolists', () => {
 });
 
 test('array of tasks should be received into todolist', () => {
-    const endState = tasksReducer({}, setTasksAC({todolistId: 'todolistId1', tasks: startState['todolistId2']}))
+    const endState = tasksReducer({}, fetchTasksTC.fulfilled({
+        todolistId: 'todolistId1',
+        tasks: startState['todolistId2']
+    }, '', 'todolistId1'))
 
     expect(endState["todolistId1"].length).toBe(3);
 });
