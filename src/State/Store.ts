@@ -19,6 +19,7 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunk)
 })
 
+export type RootReducerType = typeof rootReducer
 export type RootStateType = ReturnType<typeof rootReducer>
 
 // @ts-ignore
