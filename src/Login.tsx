@@ -30,8 +30,8 @@ export const Login = () => {
             }
             if (!values.password) {
                 errors.password = 'Required'
-            } else if (values.password.length < 8) {
-                errors.password = 'Must be 8 characters or more'
+            } else if (values.password.length < 4) {
+                errors.password = 'Must be 4 characters or more'
             }
             return errors
         },
