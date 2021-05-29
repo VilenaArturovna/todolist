@@ -8,10 +8,14 @@ export const instance = axios.create({
         'API-KEY': '2f8b88ce-de54-4bd6-9153-b38ec847d28e'
     }
 })
-
+export type FieldErrorType = {
+    field: string
+    error: string
+}
 export type ResponseType<D = {}> = { //если не передавать D, то будет пустым объектом
     resultCode: number
     messages: Array<string>
+    fieldsErrors?: Array<FieldErrorType>
     data: D
 }
 export type TodolistType = {

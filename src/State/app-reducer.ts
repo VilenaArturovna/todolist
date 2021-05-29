@@ -1,7 +1,6 @@
-import {Dispatch} from "redux";
 import {authAPI} from "../api/auth-api";
 import {setIsLoggedInAC} from "./auth-reducer";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type AppStateType = {
     status: RequestStatusType
@@ -10,40 +9,35 @@ export type AppStateType = {
 }
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'  //простой, загрузка, успешно, сбой
 
-const initialState: AppStateType = {
-    status: "idle",
-    error: null,
-    isInitialized: false
-}
+export const initializeAppTC = createAsyncThunk('app/initializeApp', async (arg, thunkAPI) => {
+    const res = await authAPI.authMe()
+    if (res.data.resultCode === 0) {
+        thunkAPI.dispatch(setIsLoggedInAC({value: true}))
+    }
+})
 
 const slice = createSlice({
     name: 'app',
-    initialState,
+    initialState:  {
+        status: "idle",
+        error: null,
+        isInitialized: false
+    } as AppStateType,
     reducers: {
         setAppStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {
             state.status = action.payload.status
         },
         setAppErrorAC(state, action: PayloadAction<{ error: string | null }>) {
             state.error = action.payload.error
-        },
-        setIsInitializedAC(state, action: PayloadAction<{ isInitialized: boolean }>) {
-            state.isInitialized = action.payload.isInitialized
         }
+    },
+    extraReducers: builder => {
+        builder.addCase(initializeAppTC.fulfilled, (state)=>{
+            state.isInitialized = true
+        })
     }
 })
 
 export const appReducer = slice.reducer
-export const {setAppStatusAC, setAppErrorAC, setIsInitializedAC} = slice.actions
+export const {setAppStatusAC, setAppErrorAC} = slice.actions
 
-export const initializeAppTC = () => {
-    return (dispatch: Dispatch) => {
-        authAPI.authMe()
-            .then((res) => {
-                    if (res.data.resultCode === 0) {
-                        dispatch(setIsLoggedInAC({value: true}))
-                    }
-                    dispatch(setIsInitializedAC({isInitialized: true}))
-                }
-            )
-    }
-}

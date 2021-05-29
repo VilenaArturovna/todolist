@@ -1,9 +1,9 @@
 import React from 'react'
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@material-ui/core'
 import {useFormik} from "formik";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {loginTC} from "./State/auth-reducer";
-import {RootStateType} from "./State/Store";
+import {RootStateType, useAppDispatch} from "./State/Store";
 import {Redirect} from "react-router-dom";
 
 type FormikErrorType = {
@@ -14,14 +14,14 @@ type FormikErrorType = {
 
 export const Login = () => {
     const isLoggedIn = useSelector<RootStateType, boolean>(state => state.auth.isLoggedIn)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
             rememberMe: false
         },
-        validate: values =>  {
+        validate: values => {
             const errors: FormikErrorType = {}
             if (!values.email) {
                 errors.email = 'Required'
@@ -30,19 +30,25 @@ export const Login = () => {
             }
             if (!values.password) {
                 errors.password = 'Required'
-            } else if (values.password.length < 8){
+            } else if (values.password.length < 8) {
                 errors.password = 'Must be 8 characters or more'
             }
             return errors
         },
-        onSubmit: values => {
-            dispatch(loginTC(values))
+        onSubmit: async (values, formikHelpers) => {
+            const action = await dispatch(loginTC(values))
+            if (loginTC.rejected.match(action)) {
+                if (action.payload?.fieldsErrors && action.payload?.fieldsErrors.length) {
+                    const error = action.payload?.fieldsErrors[0]
+                    formikHelpers.setFieldError(error.field, error.error)
+                }
+            }
             formik.resetForm();
         },
     })
 
     if (isLoggedIn) {
-        return <Redirect to={'/'} />
+        return <Redirect to={'/'}/>
     }
 
     return <Grid container justify="center">
@@ -66,7 +72,8 @@ export const Login = () => {
                             {...formik.getFieldProps('email')}
                             onBlur={formik.handleBlur}
                         />
-                        {(formik.touched.email && formik.errors.email) && <div style={{color: 'red'}}>{formik.errors.email}</div>}
+                        {(formik.touched.email && formik.errors.email) &&
+                        <div style={{color: 'red'}}>{formik.errors.email}</div>}
                         <TextField
                             type="password"
                             label="Password"
@@ -74,7 +81,8 @@ export const Login = () => {
                             {...formik.getFieldProps('password')}
                             onBlur={formik.handleBlur}
                         />
-                        {(formik.touched.password && formik.errors.password) && <div style={{color: 'red'}}>{formik.errors.password}</div>}
+                        {(formik.touched.password && formik.errors.password) &&
+                        <div style={{color: 'red'}}>{formik.errors.password}</div>}
                         <FormControlLabel
                             label={'Remember me'}
                             control={<Checkbox {...formik.getFieldProps('rememberMe')}

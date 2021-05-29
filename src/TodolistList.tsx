@@ -25,7 +25,6 @@ export const TodolistList = ({demo = false}: PropsType) => {
     const tasks = useSelector<RootStateType, TasksStateType>(state => state.tasks)
     const isLoggedIn = useSelector<RootStateType, boolean>(state => state.auth.isLoggedIn)
 
-
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -39,22 +38,22 @@ export const TodolistList = ({demo = false}: PropsType) => {
 
     //добавление таски
     const addTask = useCallback((titleTask: string, todolistId: string) => {
-        dispatch(addTaskTC(todolistId, titleTask))
+        dispatch(addTaskTC({todolistId, title: titleTask}))
     }, [dispatch])
 
     //удаление таски
-    const removeTask = useCallback((id: string, todolistId: string) => {
-        dispatch(removeTaskTC(todolistId, id))
+    const removeTask = useCallback((taskId: string, todolistId: string) => {
+        dispatch(removeTaskTC({todolistId, taskId}))
     }, [dispatch])
 
     //смена наименования таски
     const changeTitleTask = useCallback((idTask: string, newTitle: string, todolistId: string) => {
-        dispatch(updateTaskTC(todolistId, idTask, {title: newTitle}))
+        dispatch(updateTaskTC({todolistId, taskId: idTask, domainModel: {title: newTitle}}))
     }, [dispatch])
 
     //смена статуса выполнения таски
     const changeStatusOfTask = useCallback((idTask: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(updateTaskTC(todolistId, idTask, {status}))
+        dispatch(updateTaskTC({todolistId, taskId: idTask, domainModel: {status}}))
     }, [dispatch])
 
     //ТУДУЛИСТЫ
@@ -71,7 +70,7 @@ export const TodolistList = ({demo = false}: PropsType) => {
 
     //смена наименования тудулиста
     const changeTitleTodolist = useCallback((newTitle: string, todolistId: string) => {
-        dispatch(updateTodolistTitleTC(todolistId, newTitle))
+        dispatch(updateTodolistTitleTC({id: todolistId, title: newTitle}))
     }, [dispatch])
 
     //смена фильтра
@@ -80,7 +79,7 @@ export const TodolistList = ({demo = false}: PropsType) => {
     }, [dispatch])
 
     if (!isLoggedIn) {
-        return <Redirect to={'/login'} />
+        return <Redirect to={'/login'}/>
     }
 
     return <div>
