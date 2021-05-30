@@ -57,7 +57,7 @@ export const Login = () => {
                 <FormControl>
                     <FormLabel>
                         <p>To log in get registered
-                            <a href={'https://social-network.samuraijs.com/'}
+                         <a href={'https://social-network.samuraijs.com/'}
                                target={'_blank'} rel="noopener noreferrer"> here
                             </a>
                         </p>
